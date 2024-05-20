@@ -1,0 +1,9 @@
+import np
+import math
+import csv
+
+#initial open
+try:
+    file = open('stored.txt', 'r')
+
+
