@@ -1,59 +1,163 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[161]:
 
 
 #initialize
+
+list_score = {}    #song_name, score
 try:
     file = open('record.txt', 'r')
+    for i in file.readlines():
+        list_tt = {}
+        str_try = i
+        print(str_try)
+        str_try = str_try.split(":{")
+        #print(str_try)
+
+        ele = str_try[1].split("}")
+        #print(ele)
+        ele = ele[0].split(", ")
+        for i in ele:
+            if len(i) != 0:
+                tmp = i.split(": ")
+                #print(tmp[0])
+                key = ""
+                for i in range(0, len(tmp[0])):
+                    if i == 0 or i == len(tmp[0])-1:
+                        continue
+                    key += tmp[0][i]
+                list_tt[key] = int(tmp[1])
+        list_score[str_try[0]] = list_tt
+    file.close()         
+    #print(list_score)
+    print("load file successfully. welcome back")
 except FileNotFoundError:
-    print("hello")
+    print("hello this is your first time")
 
 
-# In[23]:
+# In[167]:
 
 
 #install file
-def install_file(file_name):
+def install_file(file_):
     list_ = []
-    f = open('file_name', 'r', encoding = 'utf-8')
+    score = {}
+    
+    file_name = file_+'.txt'
+    f = open(file_name, 'r', encoding = 'utf-8')
+    
     for i in f.readlines():
         list_ += [i]
     
     for i in list_:
+        log = False
+        for logic in i:
+            if logic == "|":
+                log = True
+                break
+        if log == False:
+            continue
         tmp = i.split("\xa0")
-        print(tmp)
+        #print(tmp)
+        for j in tmp:
+            tmp_2 = j.split(" ")
+            #print(tmp_2)
+            for k in tmp_2:
+                tmp_3 = k.split("|")
+                #print(tmp_3)
+                for l in tmp_3:
+                    tmp_4 = l.split("\n")
+                    #print(tmp_4)
+                    for m in tmp_4:
+                        if len(m) == 0:
+                            continue
+                        if m[0] not in {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}:
+                            continue
+                        if m not in score:
+                            score[m] = 1
+                        else:
+                            score[m] += 1
+    score = dict(sorted(score.items(), key = lambda x: x[1], reverse = True))
+    #print(len(score))
+    #print(score)
+    list_score[file_name] = score
+    f.close()
+            
 
-    
 
 
-# In[ ]:
+# In[104]:
 
 
 #practice
 def practice(list_):
+    list_ = list_.split(", ")
+    play_list = {}
+    #print(list_)
+    song = list_score.keys()
+    for j in list_:
+        #print(j)
+        for i in song:
+            #print(i)
+            song_score = list_score[i].keys()
+            if j in song_score:
+                #print(j)
+                #play_list.append(i)
+                if i not in play_list:
+                    play_list[i] = j
+                else:
+                    play_list[i] = str(play_list[i]) + ", " + str(j)
+    print("song you can play and target score they contain:")
+    for i in play_list.keys():
+        print(i, ":", play_list[i])
 
 
-# In[ ]:
+# In[165]:
 
 
-#close program
-def close_program()
+#show all of your song
+def show():
+    if len(list_score) == 0:
+        print("you don't have any song")
+        return
+    for i in list_score.keys():
+        print(i, ":")
+        for j in list_score[i].keys():
+            print(j, ":", list_score[i][j])
 
 
-# In[ ]:
+# In[128]:
+
+
+#close program, write data to txt
+def close_program():
+    file_name = "record.txt"
+    f = open(file_name, 'w')
+    for i in list_score.keys():
+        str_ = i
+        str_ += ":"
+        str_ += str(list_score[i])
+        str_ += '\n'
+        f.write(str_)
+    f.close()
+
+
+# In[168]:
 
 
 #main
 while True:
     command = input("enter your command:")
     if command == "install":
-        file_name = input("enter file name:")
+        file_name = input("enter file name: (you don't need to enter .txt)")
         install_file(file_name)
     elif command == "practice":
-        list_practice = input("enter which score you want to practice:")
+        list_practice = input("enter which score you want to practice: (format: score1, score2, score3, ...)")
         practice(list_practice)
+    elif command == "show":
+        show()
     elif command == "close":
         close_program()
         break
