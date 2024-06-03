@@ -80,12 +80,13 @@ def install_file(file_):
                         else:
                             score[m] += 1
     score = dict(sorted(score.items(), key = lambda x: x[1], reverse = True))
+    f.close()
     if len(score)==0:
         install_file2(file_)
     #print(len(score))
     #print(score)
     list_score[file_name] = score
-    f.close()
+    
             
 
 
@@ -111,18 +112,18 @@ def install_file2(file_):
         #print(tmp)
         for j in tmp:
             tmp_2 = j.split(" ")
-                for l in tmp_2:
-                    tmp_4 = l.split("\n")
+            for l in tmp_2:
+                tmp_4 = l.split("\n")
                     #print(tmp_4)
-                    for m in tmp_4:
-                        if len(m) == 0:
-                            continue
-                        if m[0] not in {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}:
-                            continue
-                        if m not in score:
-                            score[m] = 1
-                        else:
-                            score[m] += 1
+                for m in tmp_4:
+                    if len(m) == 0:
+                        continue
+                    if m[0] not in {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}:
+                        continue
+                    if m not in score:
+                        score[m] = 1
+                    else:
+                        score[m] += 1
     score = dict(sorted(score.items(), key = lambda x: x[1], reverse = True))
     #print(len(score))
     #print(score)
@@ -203,4 +204,3 @@ while True:
         break
         
 print("byebye")
-
