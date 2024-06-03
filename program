@@ -80,6 +80,8 @@ def install_file(file_):
                         else:
                             score[m] += 1
     score = dict(sorted(score.items(), key = lambda x: x[1], reverse = True))
+    if len(score)==0:
+        install_file2(file_)
     #print(len(score))
     #print(score)
     list_score[file_name] = score
@@ -87,7 +89,45 @@ def install_file(file_):
             
 
 
-
+def install_file2(file_):
+    list_ = []
+    score = {}
+    
+    file_name = file_+'.txt'
+    f = open(file_name, 'r', encoding = 'utf-8')
+    
+    for i in f.readlines():
+        list_ += [i]
+    
+    for i in list_:
+        log = False
+        for logic in i:
+            if logic.isalpha():
+                log = True
+                break
+        if log == False:
+            continue
+        tmp = i.split("\xa0")
+        #print(tmp)
+        for j in tmp:
+            tmp_2 = j.split(" ")
+                for l in tmp_2:
+                    tmp_4 = l.split("\n")
+                    #print(tmp_4)
+                    for m in tmp_4:
+                        if len(m) == 0:
+                            continue
+                        if m[0] not in {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}:
+                            continue
+                        if m not in score:
+                            score[m] = 1
+                        else:
+                            score[m] += 1
+    score = dict(sorted(score.items(), key = lambda x: x[1], reverse = True))
+    #print(len(score))
+    #print(score)
+    list_score[file_name] = score
+    f.close()
 # In[104]:
 
 
